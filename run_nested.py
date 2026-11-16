@@ -11,8 +11,8 @@ from sklearn.metrics import roc_auc_score,average_precision_score
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GroupKFold
 from pathlib import Path
-O=Path(__file__).resolve().parents[1] / 'results' / 'nested';O.mkdir(exist_ok=True)
-df=pd.read_csv(str(Path(__file__).resolve().parents[1] / 'data' / '07052025 - BSA-thiol_dataset_corrected.csv'));surface=df.label.str.replace('-BSA','',regex=False).to_numpy();conc=df.conc.to_numpy();X=df[[str(i) for i in range(401,1800)]].to_numpy(float);Xp=(X-X.mean(1,keepdims=True))/np.maximum(X.std(1,keepdims=True),1e-12)
+O=Path(__file__).resolve().parent / 'results' / 'nested';O.mkdir(parents=True,exist_ok=True)
+df=pd.read_csv(Path(__file__).resolve().parent / 'data' / '07052025 - BSA-thiol_dataset_corrected.csv');surface=df.label.str.replace('-BSA','',regex=False).to_numpy();conc=df.conc.to_numpy();X=df[[str(i) for i in range(401,1800)]].to_numpy(float);Xp=(X-X.mean(1,keepdims=True))/np.maximum(X.std(1,keepdims=True),1e-12)
 surfaces=sorted(np.unique(surface)); counts=df.groupby(['label','conc']).size().reset_index(name='n');counts.to_csv(O/'counts.csv',index=False)
 # 0 is not a valid log concentration. Evaluate zero vs positive separately; descriptive domain transfer.
 zero=[]
